@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- mybatis -->
+	<bean name="servicelogin_dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	   <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+	   <!-- 자기DB아이피 
+	   <property name="url" value="jdbc:oracle:thin:@localhost:1521:xe" />  -->
+	 	   <!-- 지원 집 아이피  -->
+	   <property name="url" value="jdbc:oracle:thin:@192.168.44.128:1521:xe" /> 
+	   
+	   <property name="username" value="travelers" />
+	   <property name="password" value="1234" />
+	</bean>
+	
+	<bean id="servicelogin_sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="servicelogin_dataSource" />
+		<property name="configLocation"
+			value="classpath:mybatis/servicelogin_mybatis-config.xml" />
+		<property name="mapperLocations"
+			value="classpath:mybatis/servicelogin_mapper.xml" />
+	</bean>
+	<bean id="servicelogin_sqlSession"
+		class="org.mybatis.spring.SqlSessionTemplate"
+		destroy-method="clearCache">
+		<constructor-arg name="sqlSessionFactory"
+			ref="servicelogin_sqlSessionFactory"></constructor-arg>
+	</bean>
+	
+	<!-- 트랜잭션 -->
+	<bean name="servicelogin_transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="servicelogin_dataSource" />
+	</bean>
+	<bean name="servicelogin_transactionTemplate"
+		class="org.springframework.transaction.support.TransactionTemplate">
+		<property name="transactionManager" ref="servicelogin_transactionManager" />
+	</bean>
+	
+</beans>
