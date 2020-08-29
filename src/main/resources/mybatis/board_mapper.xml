@@ -22,7 +22,31 @@
 	</delete>
 </mapper> -->
 
-<mapper namespace="com.j.mybatis.mateMapper">
+<mapper namespace="com.j.mybatis.boardMapper">
+	<!-- 전체 글 목록 가져오기 기능 -->
+	<select id="listAll" resultType="dto" parameterType="map">
+		select B.* from(select rownum rn, A.* from(select * from myboard where nick!='관리자'  order by num desc)A)B
+		where rn between #{str} and #{end}
+	</select>
+
+	<!-- 공지 글 목록 가져오기 기능 -->
+	<select id="notis_list" resultType="dto" parameterType="map">
+		select * from info_board where nick='관리자' order by num desc
+	</select>
+	
+	<!-- 글 전체 수 -->
+	<select id="totPage" resultType="int" >
+		select count(*) from info_board
+	</select>
+	
+	<!-- 글 저장 -->
+	<insert id="write_save" parameterType="dto">
+		insert into myboard (bnum, num, nick, title, content, ngroup, step)
+		values
+		(0,myboard_seq.nextval,#{nick},#{title},#{content} ,myboard_seq.nextval,0)
+	
+	</insert>
+
 
 	
 </mapper>

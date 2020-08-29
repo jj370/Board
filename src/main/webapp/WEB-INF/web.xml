@@ -12,6 +12,7 @@
 			classpath:spring-security.xml
 			classpath:database/servicelogin_jdbc-config.xml
 			classpath:database/admin_jdbc-config.xml
+			classpath:database/board_jdbc-config.xml
 		</param-value>
 	</context-param>
 	
